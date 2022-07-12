@@ -1,5 +1,5 @@
 let allPinyin = []
-let notone = {};
+let notone = {}
 let storage = {}
 
 function init(dict) {
@@ -54,12 +54,16 @@ function getAllSolutions(start, s, result, solutions, possible) {
     let piece = s.substring(start, i + 1)
     let match = false
     // 最后一个音特殊处理，不需要全部打完整
-    if (allPinyin.some(i => i.indexOf(piece) === 0) && !s[i + 1] && possible[i + 1]) {
+    if (
+      allPinyin.some((i) => i.indexOf(piece) === 0) &&
+      !s[i + 1] &&
+      possible[i + 1]
+    ) {
       if (piece.length === 1) {
         result.push(piece)
       } else {
         let s = []
-        allPinyin.forEach(i => {
+        allPinyin.forEach((i) => {
           if (i.indexOf(piece) === 0) {
             s.push(i)
           }
@@ -86,12 +90,12 @@ function getAllSolutions(start, s, result, solutions, possible) {
 // 获取输入拼音的所有组合（切分 + 首字母）
 function getFullKey(key) {
   let result = []
-  wordBreak(key).forEach(i => {
+  wordBreak(key).forEach((i) => {
     let item = i.split(' ')
     let last = item.length - 1
     if (item[last].indexOf(',')) {
       let keys = item[last].split(',')
-      keys.forEach(j => {
+      keys.forEach((j) => {
         item.splice(last, 1, j)
         result.push(JSON.parse(JSON.stringify(item)))
       })
@@ -99,17 +103,17 @@ function getFullKey(key) {
       result.push(item)
     }
   })
-  if (result.length === 0 || (result[0].length !== key.length)) {
+  if (result.length === 0 || result[0].length !== key.length) {
     result.push(key.split(''))
   }
   // 缓存当前结果 避免重复计算
-  storage = {[key]: result}
+  storage = { [key]: result }
   return result
 }
 function point2point(test, key, last, extend) {
   if (!test) return false
   let a = test.split(' ')
-  a.forEach(i => {
+  a.forEach((i) => {
     if (i.length > 0 && extend) {
       a.push(i.charAt(0))
     }
@@ -137,11 +141,12 @@ function match(input, keys) {
   return getIndex(py, fullString, keys)
 }
 function getIndex(py, fullString, keys) {
+  // console.log('full', fullString)
   for (let p = 0; p < py.length; p++) {
     for (let k = 0; k < fullString.length; k++) {
       let key = fullString[k]
       let keyLength = key.length
-      let extend = (keyLength === keys.length)
+      let extend = keyLength === keys.length
       let isMatch = true
       let i = 0
       let preSpaceNum = 0
@@ -156,7 +161,14 @@ function getIndex(py, fullString, keys) {
               spaceNum += 1
               i -= 1
             } else {
-              if (!point2point(py[p + i + spaceNum], key[i], (py[p + i + 1] && key[i + 1]) ? false : true, extend)) {
+              if (
+                !point2point(
+                  py[p + i + spaceNum],
+                  key[i],
+                  py[p + i + 1] && key[i + 1] ? false : true,
+                  extend
+                )
+              ) {
                 isMatch = false
                 break
               }
