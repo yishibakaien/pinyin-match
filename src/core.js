@@ -141,7 +141,7 @@ function match(input, keys) {
   return getIndex(py, fullString, keys)
 }
 function getIndex(py, fullString, keys) {
-  // console.log('full', fullString)
+  // console.error('full', fullString)
   for (let p = 0; p < py.length; p++) {
     for (let k = 0; k < fullString.length; k++) {
       let key = fullString[k]
